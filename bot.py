@@ -1,7 +1,9 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 import asyncio
 import json
+
 
 json_file_path = 'data/config.json'
 with open(json_file_path, 'r') as json_file:
@@ -11,8 +13,11 @@ with open(json_file_path, 'r') as json_file:
 token = data['token']
 prefix = data['prefix']
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix=prefix, intents=intents)
-initial_extensions = ['cogs.hello1', 'cogs.hello2']
+client = discord.Client(intents=intents)
+tree = app_commands.CommandTree(client=client)
+bot = commands.Bot(command_prefix=prefix, intents=intents,
+                   activity=discord.Game("汎用Bot"), case_insensitive=True)
+initial_extensions = ['cogs.omikuji']
 
 
 @bot.event
